@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ReactNode } from 'react';
 import LayoutHeader from './header';
 import LayoutNavigation from './navigation';
@@ -16,4 +17,4 @@ const LayoutContainer = ({ children }: Props) => {
   );
 };
 
-export default LayoutContainer;
+export default memo(LayoutContainer);
