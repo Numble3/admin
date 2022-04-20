@@ -12,13 +12,16 @@ export type User = {
   nickname: string;
   dateJoin: string;
   lastLogin: string;
-  vedio: Vedio[];
+  video: video[];
 };
 
-export type Vedio = {
+export type video = {
   id: number,
   type: string,
   description: string,
   thumbnail: string,
   url: string,
+  show_id: number,
+  title: string,
+  account_nickname : string
 };
