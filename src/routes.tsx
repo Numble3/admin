@@ -12,6 +12,12 @@ export default function Routes() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('login');
+    }
+  });
+
   const routes = useRoutes([
     { path: 'login', element: <Login /> },
     {
@@ -30,12 +36,6 @@ export default function Routes() {
     },
     { path: '*', element: <Error /> },
   ]);
-
-  useEffect(() => {
-    if (location.pathname === '/') {
-      navigate('login');
-    }
-  });
 
   return routes;
 }

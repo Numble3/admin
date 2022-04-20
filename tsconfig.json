@@ -21,7 +21,8 @@
       "src/*": [
         "./src/*"
       ]
-    }
+    },
+    "incremental": true,
   },
   "include": [
     "./src",
