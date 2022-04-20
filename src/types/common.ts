@@ -16,12 +16,16 @@ export type User = {
 };
 
 export type video = {
-  id: number,
-  type: string,
-  description: string,
-  thumbnail: string,
-  url: string,
-  show_id: number,
-  title: string,
-  account_nickname : string
+  id: number;
+  type: string;
+  description: string;
+  thumbnail: string;
+  url: string;
+  show_id: number;
+  title: string;
+  account_nickname: string;
+  view: number;
+  like: number;
+  created_date: string;
+  account_id: string;
 };
