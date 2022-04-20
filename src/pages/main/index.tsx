@@ -6,6 +6,18 @@ const CustomAlert = lazy(() => import('src/components/custom/alert'));
 const Video = lazy(() => import('./video'));
 
 export default function MainPage() {
+  /* Data */
+  const videos = getdummyUser().map(user => {
+    return user.video;
+  });
+  const combinedVideos = videos.reduce((prev, next) => {
+    return prev.concat(next);
+  });
+  const sortedVideos = combinedVideos.sort(function (a, b) {
+    return a.show_id - b.show_id;
+  });
+
+  /* modal */
   const [open, setOpen] = useState(false);
   const handleSetOpen = () => {
     setOpen(true);
@@ -14,17 +26,8 @@ export default function MainPage() {
     setOpen(false);
   };
 
+  /* pagination */
   const [page, setPage] = useState(1);
-  const videos = getdummyUser().map(user => {
-    return user.video;
-  });
-  const combindVideo = videos.reduce((prev, next) => {
-    return prev.concat(next);
-  });
-  const sortedVideos = combindVideo.sort(function (a, b) {
-    return a.show_id - b.show_id;
-  });
-
   const handleChangePage = useCallback(
     (event: React.ChangeEvent<unknown>, newPage: number) => {
       setPage(newPage);
@@ -44,10 +47,14 @@ export default function MainPage() {
           );
         })}
       </div>
-      <div className='flex flex-row-reverse px-10 pb-10'>
+      <div className='flex justify-end px-10 pb-10'>
         <Pagination count={sortedVideos.length / 10} page={page} onChange={handleChangePage} />
       </div>
-      <CustomAlert {...{ onClose, open }} title='영상 삭제' content='정말 삭제하시겠습니까?' />
+      <CustomAlert
+        {...{ onClose, open }}
+        title='영상 삭제'
+        content='정말 영상을 삭제하시겠습니까?'
+      />
     </div>
   );
 }
