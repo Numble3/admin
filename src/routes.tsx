@@ -1,4 +1,4 @@
-import { lazy, useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useLocation, useNavigate, useRoutes } from 'react-router-dom';
 import LayoutContainer from './components/layout';
 
@@ -20,7 +20,14 @@ export default function Routes() {
   });
 
   const routes = useRoutes([
-    { path: 'login', element: <Login /> },
+    {
+      path: 'login',
+      element: (
+        <Suspense fallback={null}>
+          <Login />
+        </Suspense>
+      ),
+    },
     {
       path: '/',
       element: <LayoutContainer />,

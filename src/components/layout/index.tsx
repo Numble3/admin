@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import LayoutHeader from './header';
 import LayoutNavigation from './navigation';
@@ -9,7 +9,9 @@ const LayoutContainer = () => {
       <LayoutHeader />
       <LayoutNavigation />
       <main className={`h-full w-full pl-nav pt-header`}>
-        <Outlet />
+        <Suspense fallback={null}>
+          <Outlet />
+        </Suspense>
       </main>
     </>
   );

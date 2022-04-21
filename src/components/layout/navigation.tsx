@@ -2,7 +2,7 @@ import { Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar } from '@mu
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import GridViewIcon from '@mui/icons-material/GridView';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { SidebarType } from 'src/types/common';
 import { memo } from 'react';
 
