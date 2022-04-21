@@ -1,5 +1,6 @@
 import { lazy, useEffect } from 'react';
 import { useLocation, useNavigate, useRoutes } from 'react-router-dom';
+import LayoutContainer from './components/layout';
 
 const Login = lazy(() => import('src/pages/login'));
 const User = lazy(() => import('src/pages/user'));
@@ -21,17 +22,23 @@ export default function Routes() {
   const routes = useRoutes([
     { path: 'login', element: <Login /> },
     {
-      path: 'user',
+      path: '/',
+      element: <LayoutContainer />,
       children: [
-        { index: true, element: <User /> },
-        { path: ':id', element: <UserDetail /> },
-      ],
-    },
-    {
-      path: 'main',
-      children: [
-        { index: true, element: <Main /> },
-        { path: ':id', element: <MainDetail /> },
+        {
+          path: 'user',
+          children: [
+            { index: true, element: <User /> },
+            { path: ':id', element: <UserDetail /> },
+          ],
+        },
+        {
+          path: 'main',
+          children: [
+            { index: true, element: <Main /> },
+            { path: ':id', element: <MainDetail /> },
+          ],
+        },
       ],
     },
     { path: '*', element: <Error /> },
