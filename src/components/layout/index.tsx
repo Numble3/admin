@@ -1,20 +1,20 @@
-import { memo } from 'react';
-import { ReactNode } from 'react';
+import { memo, Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
 import LayoutHeader from './header';
 import LayoutNavigation from './navigation';
 
-type Props = {
-  children: ReactNode;
-};
-
-const LayoutContainer = ({ children }: Props) => {
+const LayoutContainer = () => {
   return (
     <>
       <LayoutHeader />
       <LayoutNavigation />
-      <main className={`h-full w-full pl-nav pt-header`}>{children}</main>
+      <main className={`h-full w-full pl-nav pt-header`}>
+        <Suspense fallback={null}>
+          <Outlet />
+        </Suspense>
+      </main>
     </>
   );
 };
 
-export default memo(LayoutContainer);
+export default LayoutContainer;
