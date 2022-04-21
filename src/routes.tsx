@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { useLocation, useNavigate, useRoutes } from 'react-router-dom';
 import LayoutContainer from './components/layout';
+import { MuiTheme } from './components/layout/mui-theme';
 
 const Login = lazy(() => import('src/pages/login'));
 const User = lazy(() => import('src/pages/user'));
@@ -15,7 +16,8 @@ export default function Routes() {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      navigate('login');
+      //TODO: check authorization
+      navigate('/login');
     }
   });
 
@@ -24,13 +26,19 @@ export default function Routes() {
       path: 'login',
       element: (
         <Suspense fallback={null}>
-          <Login />
+          <MuiTheme>
+            <Login />
+          </MuiTheme>
         </Suspense>
       ),
     },
     {
       path: '/',
-      element: <LayoutContainer />,
+      element: (
+        <MuiTheme>
+          <LayoutContainer />
+        </MuiTheme>
+      ),
       children: [
         {
           path: 'user',

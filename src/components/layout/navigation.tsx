@@ -13,7 +13,6 @@ const sidebar: SidebarType[] = [
 
 const LayoutNavigation = () => {
   const location = useLocation();
-
   const current = useMemo(() => location.pathname.replace(/[/]/, ''), [location]);
 
   return (
