@@ -1,7 +1,7 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { User } from 'src/types/common';
-import Profile from './profile';
-import CustomTable from './table';
+import Profile from '../../components/user/profile';
+import CustomTable from '../../components/user/table';
 
 const headers: string[] = ['id', 'type', 'title', 'description', 'thumbnail', 'video url', ' '];
 
@@ -16,12 +16,18 @@ export default function UserDetailPage() {
   const user = location.state.user;
 
   return (
-    <div className={`px-6 pt-6 `}>
-      <h1 className={`mb-2 font-bold`}>User {'>'} DashBoard</h1>
-      <h3>Profile</h3> <hr />
-      <Profile user={user} />
-      <h3>Upload Video</h3> <hr className='mb-3' />
-      <CustomTable tableType='video' headers={headers} videoList={user.video} />
-    </div>
+    <main className={`px-6 pt-6 `}>
+      <header>
+        <h1 className={`mb-2 font-bold`}>User {'>'} DashBoard</h1>
+      </header>
+      <section>
+        <h3>Profile</h3> <hr />
+        <Profile user={user} />
+      </section>
+      <section>
+        <h3>Upload Video</h3> <hr className='mb-3' />
+        <CustomTable tableType='video' headers={headers} videoList={user.video} />
+      </section>
+    </main>
   );
 }

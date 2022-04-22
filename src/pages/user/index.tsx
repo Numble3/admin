@@ -1,7 +1,5 @@
-import React, { useCallback, useState } from 'react';
 import { getdummyUser } from './dummy';
-import { useNavigate } from 'react-router-dom';
-import CustomTable from './table';
+import CustomTable from '../../components/user/table';
 
 const users = getdummyUser();
 const headers: string[] = ['user id', 'Email', 'nickname', 'dated joined', 'last login', 'status'];
