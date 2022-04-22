@@ -11,12 +11,13 @@ import {
   TableRow,
 } from '@mui/material';
 import { lazy, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CustomAlert = lazy(() => import('src/components/custom/alert'));
 
 export default function MainDetail() {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   /* Data */
   const videos = getdummyUser().map(user => {
     return user.video;
@@ -103,7 +104,7 @@ export default function MainDetail() {
         >
           Delete
         </Button>
-        <Button style={{ margin: '0 3px' }} variant='contained'>
+        <Button onClick={() => navigate('..')} style={{ margin: '0 3px' }} variant='contained'>
           Edit Complete
         </Button>
       </div>
