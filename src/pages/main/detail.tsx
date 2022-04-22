@@ -80,13 +80,13 @@ export default function MainDetail() {
                     className='w-12 rounded py-1 px-2 text-center outline'
                     type='text'
                     maxLength={4}
-                    placeholder={`${selectedVideo?.show_id}`}
+                    placeholder={`${selectedVideo?.showId}`}
                   />
                 </TableCell>
                 <TableCell align='center'>{selectedVideo?.id}</TableCell>
                 <TableCell align='center'>{selectedVideo?.type}</TableCell>
-                <TableCell align='center'>{selectedVideo?.account_id}</TableCell>
-                <TableCell align='center'>{selectedVideo?.account_nickname}</TableCell>
+                <TableCell align='center'>{selectedVideo?.accountId}</TableCell>
+                <TableCell align='center'>{selectedVideo?.accountNickname}</TableCell>
                 <TableCell align='center'>{selectedVideo?.thumbnail}</TableCell>
                 <TableCell align='center'>{selectedVideo?.url}</TableCell>
               </TableRow>

@@ -12,20 +12,20 @@ export type User = {
   nickname: string;
   dateJoin: string;
   lastLogin: string;
-  video: video[];
+  video: Video[];
 };
 
-export type video = {
+export type Video = {
   id: number;
   type: string;
   description: string;
   thumbnail: string;
   url: string;
-  show_id: number;
+  showId: number;
   title: string;
-  account_nickname: string;
+  accountNickname: string;
   view: number;
   like: number;
-  created_date: string;
-  account_id: string;
+  createdDate: string;
+  accountId: string;
 };

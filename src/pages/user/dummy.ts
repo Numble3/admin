@@ -1,4 +1,4 @@
-import { User, video } from 'src/types/common';
+import { User, Video } from 'src/types/common';
 import * as faker from 'faker';
 
 export const getdummyUser = (): User[] => {
@@ -18,7 +18,7 @@ export const getdummyUser = (): User[] => {
     });
 };
 
-const getDummyvideos = (user_index: number, nickname: string, email: string): video[] => {
+const getDummyvideos = (user_index: number, nickname: string, email: string): Video[] => {
   const date = faker.date.past();
   return Array(10)
     .fill(this)
@@ -28,17 +28,17 @@ const getDummyvideos = (user_index: number, nickname: string, email: string): vi
       url: 'http://sample.url.com',
       type: 'embed',
       description: 'sample description',
-      show_id: user_index * 10 + (9 - i),
+      showId: user_index * 10 + (9 - i),
       title: `${user_index * 10 + (9 - i)}번째 영상`,
-      account_nickname: nickname,
+      accountNickname: nickname,
       view: Math.floor(Math.random() * 100),
       like: Math.floor(Math.random() * 100),
-      created_date:
+      createdDate:
         date.getFullYear() +
         '.' +
         (date.getMonth() + 1 > 9 ? (date.getMonth() + 1).toString() : '0' + (date.getMonth() + 1)) +
         '.' +
         (date.getDate() > 9 ? date.getDate().toString() : '0' + date.getDate().toString()),
-      account_id: email,
+      accountId: email,
     }));
 };

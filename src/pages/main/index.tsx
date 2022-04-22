@@ -3,7 +3,7 @@ import { Pagination } from '@mui/material';
 import { lazy, useState, useCallback } from 'react';
 
 const CustomAlert = lazy(() => import('src/components/custom/alert'));
-const Video = lazy(() => import('src/components/main/video'));
+const Video = lazy(() => import('src/components/main/videoItem'));
 
 export default function MainPage() {
   /* Data */
@@ -14,7 +14,7 @@ export default function MainPage() {
     return prev.concat(next);
   });
   const sortedVideos = combinedVideos.sort(function (a, b) {
-    return a.show_id - b.show_id;
+    return a.showId - b.showId;
   });
 
   /* modal */
@@ -41,7 +41,7 @@ export default function MainPage() {
       <div className={`grid grid-cols-5 gap-5 px-6 py-8`}>
         {sortedVideos.slice((page - 1) * 10, page * 10).map(video => {
           return (
-            <div key={video.show_id}>
+            <div key={video.showId}>
               <Video videoItem={video} handleSetOpen={handleSetOpen} />
             </div>
           );
