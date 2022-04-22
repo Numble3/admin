@@ -1,4 +1,4 @@
-import { lazy, memo } from 'react';
+import { lazy, memo, Suspense } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useState } from 'react';
 
@@ -19,7 +19,13 @@ const LayoutHeader = () => {
       >
         <LogoutIcon />
       </div>
-      <CustomAlert {...{ onClose, open }} title='로그아웃' content='정말 로그아웃 하시겠습니까?' />
+      <Suspense fallback={null}>
+        <CustomAlert
+          {...{ onClose, open }}
+          title='로그아웃'
+          content='정말 로그아웃 하시겠습니까?'
+        />
+      </Suspense>
     </header>
   );
 };
