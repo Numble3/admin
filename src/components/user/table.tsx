@@ -14,13 +14,13 @@ import {
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CustomAlert } from 'src/components/custom';
-import { User, video } from 'src/types/common';
+import { User, Video } from 'src/types/common';
 
 interface Props {
   tableType: string;
   headers: string[];
   userList?: User[];
-  videoList?: video[];
+  videoList?: Video[];
 }
 
 const CustomTable = ({ tableType, headers, userList, videoList }: Props) => {
@@ -34,7 +34,7 @@ const CustomTable = ({ tableType, headers, userList, videoList }: Props) => {
     },
     [page]
   );
-  
+
   /* modal */
   const [open, setOpen] = useState(false);
   const handleSetOpen = () => {
@@ -47,7 +47,7 @@ const CustomTable = ({ tableType, headers, userList, videoList }: Props) => {
   /* constant */
   const length: number = tableType === 'video' ? videoList!.length : userList!.length;
   const rowPerPage: number = tableType === 'video' ? 5 : 10;
-  const alertMessage : string = tableType === 'video' ? '영상' : '유저';
+  const alertMessage: string = tableType === 'video' ? '영상' : '유저';
 
   return (
     <div>
@@ -95,7 +95,7 @@ const CustomTable = ({ tableType, headers, userList, videoList }: Props) => {
                       <TableCell align='center'>{v.nickname}</TableCell>
                       <TableCell align='center'>{v.dateJoin}</TableCell>
                       <TableCell align='center'>{v.lastLogin}</TableCell>
-                      <TableCell style={{ padding: 0 , height: 60 }} align='center'>
+                      <TableCell style={{ padding: 0, height: 60 }} align='center'>
                         <div className={`flex h-full flex-col items-center justify-evenly`}>
                           <Button
                             style={{ padding: 0, width: 100 }}

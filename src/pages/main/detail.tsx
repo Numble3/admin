@@ -11,12 +11,13 @@ import {
   TableRow,
 } from '@mui/material';
 import { lazy, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CustomAlert = lazy(() => import('src/components/custom/alert'));
 
 export default function MainDetail() {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   /* Data */
   const videos = getdummyUser().map(user => {
     return user.video;
@@ -80,13 +81,13 @@ export default function MainDetail() {
                     className='w-12 rounded py-1 px-2 text-center outline'
                     type='text'
                     maxLength={4}
-                    placeholder={`${selectedVideo?.show_id}`}
+                    placeholder={`${selectedVideo?.showId}`}
                   />
                 </TableCell>
                 <TableCell align='center'>{selectedVideo?.id}</TableCell>
                 <TableCell align='center'>{selectedVideo?.type}</TableCell>
-                <TableCell align='center'>{selectedVideo?.account_id}</TableCell>
-                <TableCell align='center'>{selectedVideo?.account_nickname}</TableCell>
+                <TableCell align='center'>{selectedVideo?.accountId}</TableCell>
+                <TableCell align='center'>{selectedVideo?.accountNickname}</TableCell>
                 <TableCell align='center'>{selectedVideo?.thumbnail}</TableCell>
                 <TableCell align='center'>{selectedVideo?.url}</TableCell>
               </TableRow>
@@ -103,7 +104,7 @@ export default function MainDetail() {
         >
           Delete
         </Button>
-        <Button style={{ margin: '0 3px' }} variant='contained'>
+        <Button onClick={() => navigate('..')} style={{ margin: '0 3px' }} variant='contained'>
           Edit Complete
         </Button>
       </div>
