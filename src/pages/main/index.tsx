@@ -3,7 +3,7 @@ import { Pagination } from '@mui/material';
 import { lazy, useState, useCallback } from 'react';
 
 const CustomAlert = lazy(() => import('src/components/custom/alert'));
-const Video = lazy(() => import('./video'));
+const Video = lazy(() => import('src/components/main/video'));
 
 export default function MainPage() {
   /* Data */
