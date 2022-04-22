@@ -47,6 +47,7 @@ const CustomTable = ({ tableType, headers, userList, videoList }: Props) => {
   /* constant */
   const length: number = tableType === 'video' ? videoList!.length : userList!.length;
   const rowPerPage: number = tableType === 'video' ? 5 : 10;
+  const alertMessage : string = tableType === 'video' ? '영상' : '유저';
 
   return (
     <div>
@@ -126,8 +127,8 @@ const CustomTable = ({ tableType, headers, userList, videoList }: Props) => {
       </div>
       <CustomAlert
         {...{ onClose, open }}
-        title='영상 삭제'
-        content='정말 영상을 삭제하시겠습니까?'
+        title={`${alertMessage} 삭제`}
+        content={`정말 ${alertMessage}을 삭제하시겠습니까?`}
       />
     </div>
   );
