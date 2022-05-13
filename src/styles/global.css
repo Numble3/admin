@@ -29,3 +29,11 @@ html, body{
   --layout-header: 90px;
   --layout-nav: 240px;
 }
+
+#alert{
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  transition:  1s ease-in-out;
+}

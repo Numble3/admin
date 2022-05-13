@@ -29,3 +29,5 @@ export type Video = {
   createdDate: string;
   accountId: string;
 };
+
+export type AlertType = { visible: boolean; msg: string };
