@@ -9,14 +9,11 @@ axios.interceptors.response.use(
       config,
       response: { status },
     } = err;
-    const navigate = useNavigate();
-
     if (status === 401) {
       const { refreshToken } = JSON.parse(localStorage.getItem('admin') || '');
 
       if (!refreshToken) {
         localStorage.removeItem('admin');
-        navigate('/login');
         return;
       }
 
