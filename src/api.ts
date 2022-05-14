@@ -21,15 +21,17 @@ export const sendRequest = async <T>(
   getAuth(axiosConfig);
 
   try {
+    console.log('axiosConfig', axiosConfig);
+
     const res = await axios(axiosConfig);
-    console.log('res', res);
+    // console.log('res', res);
 
     if (res.data && res.status === 200) {
       return { data: res.data, error: null };
     }
     throw res;
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     let errRes: ErrorType = { data: { message: '' }, status: -1, statusText: '' };
 
     //401에러 확인
@@ -45,7 +47,8 @@ export const sendRequest = async <T>(
 
 const getAuth = (axiosConfig: AxiosRequestConfig) => {
   const token = JSON.parse(localStorage.getItem('admin') || 'null');
-  if (token && token.accesToken) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token.accessToken}`;
-  }
+  // if (token && token.accesToken) {
+  //   axiosConfig.headers = { Authorization: `Bearer ${token.accessToken}` };
+  // }
+  axiosConfig.headers = token ? { Authorization: `${token.accessToken}` } : {};
 };

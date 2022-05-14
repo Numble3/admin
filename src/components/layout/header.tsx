@@ -1,12 +1,26 @@
 import { lazy, memo, Suspense } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useState } from 'react';
+import { useAdmin } from 'src/hooks/use-admin';
+import { useAlert } from '../user/use-common';
+import { useNavigate } from 'react-router-dom';
 
 const CustomAlert = lazy(() => import('src/components/custom/alert'));
 
 const LayoutHeader = () => {
   const [open, setOpen] = useState(false);
+  const { logout } = useAdmin();
+  const navigate = useNavigate();
 
+  const onOk = async () => {
+    const error = await logout();
+    if (error) {
+      console.error(error);
+    }
+    localStorage.removeItem('admin');
+    navigate('/login');
+    setOpen(false);
+  };
   const onClose = () => {
     setOpen(false);
   };
@@ -21,7 +35,7 @@ const LayoutHeader = () => {
       </div>
       <Suspense fallback={null}>
         <CustomAlert
-          {...{ onClose, open }}
+          {...{ onClose, open, onOk }}
           title='로그아웃'
           content='정말 로그아웃 하시겠습니까?'
         />

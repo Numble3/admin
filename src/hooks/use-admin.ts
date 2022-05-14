@@ -19,7 +19,7 @@ export const useAdmin = () => {
   };
 
   const logout = async () => {
-    const { error } = await sendRequest({ method: 'DELETE', path: '/api/withdrawal' });
+    const { error } = await sendRequest({ method: 'GET', path: '/api/logout' });
 
     return error;
   };
@@ -33,7 +33,6 @@ export const useCheckToken = () => {
   const token = localStorage.getItem('admin');
 
   useEffect(() => {
-    console.log('location', location);
     //토큰 있는지 확인
     if (location.pathname !== '/login' && !token) {
       navigate('/login');
