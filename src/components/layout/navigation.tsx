@@ -33,7 +33,7 @@ const LayoutNavigation = () => {
           boxSizing: 'content-box',
         }}
       >
-        App icon
+        <img src={'/public/images/icon.png'} alt='icon' width={130} height={50} />
       </Toolbar>
       <List>
         {sidebar.map((v, i) => (

@@ -27,7 +27,7 @@ export default function LoginPage() {
   const { onShowAlert, onCloseAlert } = useAlert();
 
   const handleLogin = async () => {
-    const { data, error } = await login(id, pwd);
+    const { error } = await login(id, pwd);
 
     if (error) {
       onShowAlert('이메일 또는 비밀번호를 잘못 입력했습니다.');
@@ -37,15 +37,21 @@ export default function LoginPage() {
     navigate('/user');
   };
 
-  const onClose = () => {
-    onCloseAlert();
-  };
-
   return (
     <>
       <Box className='grid h-full w-full place-items-center bg-gray-200'>
         <Paper elevation={3} className='rounded-lg p-8'>
-          <h1 className='mt-3 mb-10 text-center text-4xl'>관리자 페이지</h1>
+          {/* <h1 className='mt-3 mb-10 text-center text-4xl'> */}
+          <div className='flex justify-center'>
+            <img
+              src={'/public/images/icon.png'}
+              alt='icon'
+              width={200}
+              height={50}
+              className='mb-10 mt-3 '
+            />
+          </div>
+          {/* </h1> */}
           <div className='mb-10 flex flex-col gap-2'>
             <TextField
               sx={{ width: '40ch' }}
