@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -12,6 +12,7 @@ import {
 import { lazy, useEffect, useState } from 'react';
 import { useMain } from 'src/hooks/use-main';
 import { VideoDetail, VideoType } from 'src/typings/common';
+import { useAlert } from 'src/components/user/use-common';
 
 const transType = (v: VideoType) => (v === 'EMBEDDED' ? '임베드 영상' : '직접 업로드');
 
@@ -21,8 +22,10 @@ const Modal = lazy(() => import('src/components/common/modal'));
 export default function MainDetail() {
   const [videoData, setVidoeData] = useState<VideoDetail>();
 
+  const navigate = useNavigate();
   const { id } = useParams();
-  const { videoDetail } = useMain();
+  const { onShowAlert } = useAlert();
+  const { videoDetail, deleteVideo } = useMain();
 
   useEffect(() => {
     fetchVideo();
@@ -38,6 +41,17 @@ export default function MainDetail() {
 
   /* modal */
   const [open, setOpen] = useState(false);
+  const onOk = async () => {
+    const error = await deleteVideo(Number(id));
+    if (error) {
+      onShowAlert('에러가 발생했습니다', 'error');
+      onClose();
+      return;
+    }
+    onClose();
+    onShowAlert('영상을 삭제했습니다', 'success');
+    navigate('/main');
+  };
   const onClose = () => {
     setOpen(false);
   };
@@ -46,7 +60,7 @@ export default function MainDetail() {
     <div>
       <h1 className='px-6 pt-6 font-bold'>메인 콘텐츠 {'>'} 수정</h1>
       <div className='mx-10 flex items-center py-8'>
-        <div className='flex w-full justify-center'>
+        <div className='flex w-[500px] justify-center'>
           <img
             src={videoData?.thumbnailUrl}
             alt='thumbnail'
@@ -124,7 +138,11 @@ export default function MainDetail() {
           삭제
         </Button>
       </div>
-      <Modal {...{ onClose, open }} title='영상 삭제' content='정말 영상을 삭제하시겠습니까?' />
+      <Modal
+        {...{ onOk, onClose, open }}
+        title='영상 삭제'
+        content='정말 영상을 삭제하시겠습니까?'
+      />
     </div>
   );
 }
