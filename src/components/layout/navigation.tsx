@@ -43,7 +43,7 @@ const LayoutNavigation = () => {
               <ListItemText primary={v.label} />
               <aside
                 className={`absolute top-0 left-0 h-full w-2 ${
-                  current === v.path && 'bg-gray-300'
+                  current.includes(v.path) && 'bg-gray-300'
                 }`}
               />
             </ListItem>

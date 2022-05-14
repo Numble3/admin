@@ -18,5 +18,14 @@ export const useUser = () => {
     return { error };
   };
 
-  return { userList, withdraw };
+  const userDetail = async (id: string) => {
+    const { data, error } = await sendRequest<UserDetail>({
+      method: 'GET',
+      path: `/api/admin/accounts/${id}`,
+    });
+
+    return { data, error };
+  };
+
+  return { userList, withdraw, userDetail };
 };

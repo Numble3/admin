@@ -13,3 +13,11 @@ type IUserRes = {
   totalPage: number;
   accountDtos: User[];
 };
+
+type UserDetail = {
+  id: number;
+  email: string;
+  nickname: string;
+  lastLogin: string;
+  createdAt: string;
+};

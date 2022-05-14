@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 
 axios.defaults.baseURL = 'http://3.36.157.185:80';
@@ -88,8 +87,4 @@ export const sendRequest = async <T>(
 const getAuth = (axiosConfig: AxiosRequestConfig) => {
   const token = JSON.parse(localStorage.getItem('admin') || 'null');
   axiosConfig.headers = token ? { Authorization: `${token.accessToken}` } : {};
-};
-
-export const mutate = () => {
-  const { data } = useSWR();
 };

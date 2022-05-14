@@ -1,21 +1,28 @@
-import { useLocation } from 'react-router-dom';
-import { User } from 'src/types/common';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useUser } from 'src/hooks/use-user';
 import Profile from '../../components/user/profile';
 
-const headers: string[] = ['id', 'type', 'title', 'description', 'thumbnail', 'video url', ' '];
-
-interface RouteState {
-  state: {
-    user: User;
-  };
-}
-
 export default function UserDetailPage() {
-  const location = useLocation() as RouteState;
-  const user = location.state.user;
+  const [user, setUser] = useState<UserDetail | null>(null);
+  const { id } = useParams();
+  const { userDetail } = useUser();
+
+  useEffect(() => {
+    fetchUser();
+  }, [id]);
+
+  const fetchUser = async () => {
+    const { data, error } = await userDetail(String(id));
+    if (error) {
+      alert('예상치 못한 에러가 발생했습니다.');
+      return;
+    }
+    setUser(data);
+  };
 
   return (
-    <main className={`px-6 pt-6 `}>
+    <main className={`px-6 pt-6`}>
       <header>
         <h1 className={`mb-2 font-bold`}>User {'>'} DashBoard</h1>
       </header>
@@ -25,7 +32,7 @@ export default function UserDetailPage() {
       </section>
       <section>
         <h3>Upload Video</h3> <hr className='mb-3' />
-        <CustomTable tableType='video' headers={headers} videoList={user.video} />
+        {/* <UserDetailTable tableType='video' headers={headers} videoList={user.video} /> */}
       </section>
     </main>
   );
