@@ -1,5 +1,6 @@
-import { memo, Suspense } from 'react';
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import AlertPopup from './alert';
 import LayoutHeader from './header';
 import LayoutNavigation from './navigation';
 
@@ -13,6 +14,7 @@ const LayoutContainer = () => {
           <Outlet />
         </Suspense>
       </main>
+      <AlertPopup />
     </>
   );
 };

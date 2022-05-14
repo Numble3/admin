@@ -9,13 +9,14 @@ import {
 
 interface Props {
   open: boolean;
+  onOk?: () => void;
   onClose: () => void;
   title?: string;
   content?: string;
 }
 
 /** custom modal(alert) - 확인, 취소버튼이 있는 모달 */
-const CustomAlert = ({ onClose, open, title = 'title', content = 'content' }: Props) => {
+const CustomAlert = ({ onClose, onOk, open, title = 'title', content = 'content' }: Props) => {
   return (
     <Dialog
       open={open}
@@ -31,7 +32,7 @@ const CustomAlert = ({ onClose, open, title = 'title', content = 'content' }: Pr
         <Button onClick={onClose} style={{ color: 'black' }}>
           닫기
         </Button>
-        <Button onClick={onClose} autoFocus>
+        <Button onClick={onOk} autoFocus>
           확인
         </Button>
       </DialogActions>

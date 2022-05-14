@@ -6,16 +6,7 @@ export type SidebarType = {
   icon: ReactNode;
 };
 
-export type User = {
-  id: number;
-  email: string;
-  nickname: string;
-  dateJoin: string;
-  lastLogin: string;
-  video: Video[];
-};
-
-export type Video = {
+export type video = {
   id: number;
   type: string;
   description: string;
@@ -29,3 +20,5 @@ export type Video = {
   createdDate: string;
   accountId: string;
 };
+
+export type AlertType = { visible: boolean; msg: string };

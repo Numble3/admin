@@ -6,48 +6,33 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
-  TablePagination,
   TableRow,
 } from '@mui/material';
-import React, { useCallback, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CustomAlert } from 'src/components/custom';
-import { User, Video } from 'src/types/common';
 
 interface Props {
-  tableType: string;
-  headers: string[];
-  userList?: User[];
-  videoList?: Video[];
+  currentPage: number;
+  totalPage: number;
+  handleChangePage: (event: ChangeEvent<unknown>, newPage: number) => void;
+  userList: User[];
 }
 
-const CustomTable = ({ tableType, headers, userList, videoList }: Props) => {
+const CustomTable = ({ currentPage, totalPage, userList, handleChangePage }: Props) => {
   const navigate = useNavigate();
-
-  /* pagenation */
-  const [page, setPage] = useState(1);
-  const handleChangePage = useCallback(
-    (event: React.ChangeEvent<unknown>, newPage: number) => {
-      setPage(newPage);
-    },
-    [page]
-  );
+  const [open, setOpen] = useState(false);
 
   /* modal */
-  const [open, setOpen] = useState(false);
+  const headers: string[] = ['이메일', '닉네임', '가입일', '마지막 로그인'];
+
   const handleSetOpen = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
   };
-
-  /* constant */
-  const length: number = tableType === 'video' ? videoList!.length : userList!.length;
-  const rowPerPage: number = tableType === 'video' ? 5 : 10;
-  const alertMessage: string = tableType === 'video' ? '영상' : '유저';
 
   return (
     <div>
@@ -64,71 +49,46 @@ const CustomTable = ({ tableType, headers, userList, videoList }: Props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableType === 'video'
-                ? videoList!.slice((page - 1) * rowPerPage, page * rowPerPage).map(v => (
-                    <TableRow key={v.id}>
-                      <TableCell align='center'>{v.id}</TableCell>
-                      <TableCell align='center'>{v.type}</TableCell>
-                      <TableCell align='center'>{v.title}</TableCell>
-                      <TableCell align='center'>{v.description}</TableCell>
-                      <TableCell align='center'>{v.thumbnail}</TableCell>
-                      <TableCell align='center'>{v.url}</TableCell>
-                      <TableCell style={{ padding: 0 }} align='center'>
-                        <div className={`flex h-full flex-col items-center justify-evenly`}>
-                          <Button
-                            style={{ padding: 0 }}
-                            variant='contained'
-                            color='error'
-                            size='small'
-                            onClick={() => handleSetOpen()}
-                          >
-                            delete
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                : userList!.slice((page - 1) * rowPerPage, page * rowPerPage).map(v => (
-                    <TableRow key={v.id}>
-                      <TableCell align='center'>{v.id}</TableCell>
-                      <TableCell align='center'>{v.email}</TableCell>
-                      <TableCell align='center'>{v.nickname}</TableCell>
-                      <TableCell align='center'>{v.dateJoin}</TableCell>
-                      <TableCell align='center'>{v.lastLogin}</TableCell>
-                      <TableCell style={{ padding: 0, height: 60 }} align='center'>
-                        <div className={`flex h-full flex-col items-center justify-evenly`}>
-                          <Button
-                            style={{ padding: 0, width: 100 }}
-                            variant='contained'
-                            size='small'
-                            onClick={() => navigate(`${v.id}`, { state: { user: v } })}
-                          >
-                            dashboard
-                          </Button>
-                          <Button
-                            style={{ padding: 0, width: 100 }}
-                            variant='contained'
-                            color='error'
-                            size='small'
-                            onClick={() => handleSetOpen()}
-                          >
-                            delete
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+              {userList.map(v => (
+                <TableRow key={v.id}>
+                  <TableCell align='center'>{v.email}</TableCell>
+                  <TableCell align='center'>{v.nickname}</TableCell>
+                  <TableCell align='center'>{v.createdAt}</TableCell>
+                  <TableCell align='center'>{v.lastLogin}</TableCell>
+                  <TableCell style={{ padding: 0, height: 60 }} align='center'>
+                    <div className={`flex h-full flex-col items-center justify-evenly`}>
+                      <Button
+                        style={{ padding: 0, width: 100 }}
+                        variant='contained'
+                        size='small'
+                        onClick={() => navigate(`${v.id}`, { state: { user: v } })}
+                      >
+                        대시보드
+                      </Button>
+                      <Button
+                        style={{ padding: 0, width: 100 }}
+                        variant='contained'
+                        color='error'
+                        size='small'
+                        onClick={() => handleSetOpen()}
+                      >
+                        삭제
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
       </div>
       <div className='flex justify-end px-10 pb-10'>
-        <Pagination count={length / rowPerPage} page={page} onChange={handleChangePage} />
+        <Pagination count={totalPage} page={currentPage} onChange={handleChangePage} />
       </div>
       <CustomAlert
         {...{ onClose, open }}
-        title={`${alertMessage} 삭제`}
-        content={`정말 ${alertMessage}을 삭제하시겠습니까?`}
+        title={`회원 탈퇴`}
+        content={`정말 회원을 탈퇴하시겠습니까?`}
       />
     </div>
   );
