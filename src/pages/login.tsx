@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AlertPopup from 'src/components/layout/alert';
+import AlertPopup from 'src/components/common/alert';
 import { useAlert } from 'src/components/user/use-common';
 import { useAdmin } from 'src/hooks/use-admin';
 

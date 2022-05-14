@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CustomModal } from 'src/components/custom';
+import { Modal } from 'src/components/common';
 import { video } from 'src/types/common';
 
 interface Props {
@@ -124,7 +124,7 @@ const UserDetailTable = ({
       <div className='flex justify-end px-10 pb-10'>
         <Pagination count={length / rowPerPage} page={page} onChange={handleChangePage} />
       </div>
-      <CustomModal
+      <Modal
         {...{ onClose, open }}
         title={`${alertMessage} 삭제`}
         content={`정말 ${alertMessage}을 삭제하시겠습니까?`}

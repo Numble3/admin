@@ -2,10 +2,9 @@ import { lazy, memo, Suspense } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useState } from 'react';
 import { useAdmin } from 'src/hooks/use-admin';
-import { useAlert } from '../user/use-common';
 import { useNavigate } from 'react-router-dom';
 
-const CustomModal = lazy(() => import('src/components/custom/modal'));
+const Modal = lazy(() => import('src/components/common/modal'));
 
 const LayoutHeader = () => {
   const [open, setOpen] = useState(false);
@@ -26,7 +25,7 @@ const LayoutHeader = () => {
   };
 
   return (
-    <header className='fixed h-header w-full bg-gray-200'>
+    <header className='relative h-header w-full bg-gray-200'>
       <div
         className='absolute right-0 m-4 cursor-pointer rounded-full bg-white p-3'
         onClick={() => setOpen(true)}
@@ -34,7 +33,7 @@ const LayoutHeader = () => {
         <LogoutIcon />
       </div>
       <Suspense fallback={null}>
-        <CustomModal
+        <Modal
           {...{ onClose, open, onOk }}
           title='로그아웃'
           content='정말 로그아웃 하시겠습니까?'

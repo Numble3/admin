@@ -13,7 +13,7 @@ import {
 import { lazy, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CustomModal = lazy(() => import('src/components/custom/modal'));
+const Modal = lazy(() => import('src/components/common/modal'));
 
 export default function MainDetail() {
   const { id } = useParams();
@@ -108,11 +108,7 @@ export default function MainDetail() {
           Edit Complete
         </Button>
       </div>
-      <CustomModal
-        {...{ onClose, open }}
-        title='영상 삭제'
-        content='정말 영상을 삭제하시겠습니까?'
-      />
+      <Modal {...{ onClose, open }} title='영상 삭제' content='정말 영상을 삭제하시겠습니까?' />
     </div>
   );
 }

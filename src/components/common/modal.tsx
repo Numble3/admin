@@ -16,7 +16,7 @@ interface Props {
 }
 
 /** custom modal(alert) - 확인, 취소버튼이 있는 모달 */
-const CustomModal = ({ onClose, onOk, open, title = 'title', content = 'content' }: Props) => {
+const Modal = ({ onClose, onOk, open, title = 'title', content = 'content' }: Props) => {
   return (
     <Dialog
       open={open}
@@ -40,4 +40,4 @@ const CustomModal = ({ onClose, onOk, open, title = 'title', content = 'content'
   );
 };
 
-export default CustomModal;
+export default Modal;

@@ -2,13 +2,8 @@ import { getdummyUser } from '../user/dummy';
 import { Pagination } from '@mui/material';
 import { lazy, useState, useCallback } from 'react';
 
-<<<<<<< Updated upstream
-const CustomAlert = lazy(() => import('src/components/custom/alert'));
+const Modal = lazy(() => import('src/components/common/modal'));
 const Video = lazy(() => import('src/components/main/videoItem'));
-=======
-const CustomModal = lazy(() => import('src/components/custom/modal'));
-const Video = lazy(() => import('./video'));
->>>>>>> Stashed changes
 
 export default function MainPage() {
   /* Data */
@@ -55,11 +50,7 @@ export default function MainPage() {
       <div className='flex justify-end px-10 pb-10'>
         <Pagination count={sortedVideos.length / 10} page={page} onChange={handleChangePage} />
       </div>
-      <CustomModal
-        {...{ onClose, open }}
-        title='영상 삭제'
-        content='정말 영상을 삭제하시겠습니까?'
-      />
+      <Modal {...{ onClose, open }} title='영상 삭제' content='정말 영상을 삭제하시겠습니까?' />
     </div>
   );
 }

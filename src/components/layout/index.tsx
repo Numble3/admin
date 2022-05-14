@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import AlertPopup from './alert';
+import AlertPopup from '../common/alert';
 import LayoutHeader from './header';
 import LayoutNavigation from './navigation';
 
@@ -9,7 +9,7 @@ const LayoutContainer = () => {
     <>
       <LayoutHeader />
       <LayoutNavigation />
-      <main className={`h-full w-full pl-nav pt-header`}>
+      <main className={`h-full w-full pl-nav`}>
         <Suspense fallback={null}>
           <Outlet />
         </Suspense>

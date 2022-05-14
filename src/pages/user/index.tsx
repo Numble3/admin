@@ -1,7 +1,7 @@
 import UserTable from '../../components/user/table';
 import { useUser } from 'src/hooks/use-user';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { CustomModal } from 'src/components/custom';
+import { Modal } from 'src/components/common';
 import { useAlert } from 'src/components/user/use-common';
 
 export default function UserPage() {
@@ -68,7 +68,7 @@ export default function UserPage() {
           {...{ currentPage, handleChangePage, handleSetOpen }}
         />
       </div>
-      <CustomModal
+      <Modal
         {...{ onClose, open, onOk }}
         title={`회원 탈퇴`}
         content={`정말 회원을 탈퇴하시겠습니까?`}
