@@ -1,7 +1,8 @@
-import { lazy, Suspense, useEffect } from 'react';
-import { useLocation, useNavigate, useRoutes } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { useRoutes } from 'react-router-dom';
 import LayoutContainer from './components/layout';
 import { MuiTheme } from './components/layout/mui-theme';
+import { useCheckToken } from './hooks/use-admin';
 
 const Login = lazy(() => import('src/pages/login'));
 const User = lazy(() => import('src/pages/user'));
@@ -11,15 +12,7 @@ const MainDetail = lazy(() => import('src/pages/main/detail'));
 const Error = lazy(() => import('src/pages/error'));
 
 export default function Routes() {
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (location.pathname === '/') {
-      //TODO: check authorization
-      navigate('/login');
-    }
-  });
+  useCheckToken();
 
   const routes = useRoutes([
     {

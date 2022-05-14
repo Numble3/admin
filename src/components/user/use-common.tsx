@@ -1,23 +1,20 @@
-import { useEffect, useState } from 'react';
 import { AlertType } from 'src/types/common';
+import useSWR from 'swr';
 
 export const useAlert = () => {
-  const [alert, setAlert] = useState<AlertType>({
-    visible: false,
-    msg: '',
-  });
-
-  const onToggleAlert = (msg?: string) => {
-    setAlert(p => ({ visible: !p.visible, msg: msg ?? '' }));
-  };
+  const { data: alert, mutate } = useSWR<AlertType>('/local/alert');
+  // const [alert, setAlert] = useState<AlertType>({
+  //   visible: false,
+  //   msg: '',
+  // });
 
   const onShowAlert = (msg: string) => {
-    setAlert({ visible: true, msg });
+    mutate({ msg, visible: true });
   };
 
   const onCloseAlert = () => {
-    setAlert(p => ({ ...p, visible: false }));
+    mutate({ msg: '', visible: false });
   };
 
-  return { alert, onToggleAlert, onShowAlert, onCloseAlert };
+  return { alert, onShowAlert, onCloseAlert };
 };

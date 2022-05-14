@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 
 axios.defaults.baseURL = 'http://3.36.157.185:80';
 
@@ -16,12 +16,13 @@ export const sendRequest = async <T>(
   };
 
   if (request.data) axiosConfig.data = request.data;
+  if (request.params) axiosConfig.params = request.params;
 
-  //TODO : check auth
-  authorization(axiosConfig);
+  getAuth(axiosConfig);
 
   try {
     const res = await axios(axiosConfig);
+    console.log('res', res);
 
     if (res.data && res.status === 200) {
       return { data: res.data, error: null };
@@ -31,6 +32,7 @@ export const sendRequest = async <T>(
     console.error(err);
     let errRes: ErrorType = { data: { message: '' }, status: -1, statusText: '' };
 
+    //401에러 확인
     if (axios.isAxiosError(err)) {
       errRes.data.message = (err.response?.data as { message: string }).message ?? '';
       errRes.status = err.response?.status ?? -1;
@@ -41,8 +43,9 @@ export const sendRequest = async <T>(
   }
 };
 
-export const authorization = (axiosConfig: AxiosRequestConfig) => {
-  const adminToken = JSON.parse(localStorage.getItem('admin') ?? 'null');
-
-  axiosConfig.headers = adminToken ? { authorization: `Bearer ${adminToken.accessToken}` } : {};
+const getAuth = (axiosConfig: AxiosRequestConfig) => {
+  const token = JSON.parse(localStorage.getItem('admin') || 'null');
+  if (token && token.accesToken) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token.accessToken}`;
+  }
 };

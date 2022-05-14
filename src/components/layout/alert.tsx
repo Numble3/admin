@@ -1,29 +1,24 @@
 import { Alert } from '@mui/material';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
+import { useAlert } from '../user/use-common';
 
-const AlertPopup = ({
-  visible,
-  msg,
-  onClose,
-}: {
-  visible: boolean;
-  msg: string;
-  onClose: () => void;
-}) => {
+const AlertPopup = () => {
+  const { alert, onCloseAlert } = useAlert();
+
   useEffect(() => {
-    if (visible) {
+    if (alert?.visible) {
       const interval = setTimeout(() => {
-        onClose();
+        onCloseAlert();
       }, 3000);
       return () => clearTimeout(interval);
     }
-  }, [visible]);
+  }, [alert]);
 
   return (
-    <div id='alert' className={`top-5 ${visible ? 'translate-y-0' : 'translate-y-[-150%]'}`}>
-      <Alert severity='error'>{msg}</Alert>
+    <div id='alert' className={`top-5 ${alert?.visible ? 'translate-y-0' : 'translate-y-[-150%]'}`}>
+      <Alert severity='error'>{alert?.msg}</Alert>
     </div>
   );
 };
 
-export default AlertPopup;
+export default memo(AlertPopup);

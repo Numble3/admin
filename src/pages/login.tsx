@@ -10,7 +10,7 @@ import {
   Paper,
   TextField,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AlertPopup from 'src/components/layout/alert';
 import { useAlert } from 'src/components/user/use-common';
@@ -23,25 +23,23 @@ export default function LoginPage() {
 
   const navigate = useNavigate();
   const { login } = useAdmin();
-  const { alert, onShowAlert, onCloseAlert } = useAlert();
+
+  const { onShowAlert, onCloseAlert } = useAlert();
 
   const handleLogin = async () => {
-    //TODO: login API
     const { data, error } = await login(id, pwd);
+
     if (error) {
       onShowAlert('이메일 또는 비밀번호를 잘못 입력했습니다.');
       return;
     }
+
     navigate('/user');
   };
 
   const onClose = () => {
     onCloseAlert();
   };
-
-  useEffect(() => {
-    console.log('alert', alert);
-  }, [alert]);
 
   return (
     <>
@@ -90,7 +88,7 @@ export default function LoginPage() {
           Copyrightⓒ2022 Numble Team3. All rights reserved.
         </footer>
       </Box>
-      <AlertPopup msg={alert.msg} onClose={onClose} visible={alert.visible} />
+      <AlertPopup />
     </>
   );
 }
