@@ -40,7 +40,10 @@ export const useCheckToken = () => {
       navigate('/login');
     }
     if (location.pathname === '/login' && token) {
-      navigate('/');
+      navigate('/user');
+    }
+    if (location.pathname === '/') {
+      navigate('/user');
     }
   }, [location]);
 
