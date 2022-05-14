@@ -29,6 +29,9 @@ export const sendRequest = async <T>(
     if (res.data && res.status === 200) {
       return { data: res.data, error: null };
     }
+    if (res.status === 401) {
+      getRefreshToken();
+    }
     throw res;
   } catch (err) {
     // console.error(err);
@@ -51,4 +54,27 @@ const getAuth = (axiosConfig: AxiosRequestConfig) => {
   //   axiosConfig.headers = { Authorization: `Bearer ${token.accessToken}` };
   // }
   axiosConfig.headers = token ? { Authorization: `${token.accessToken}` } : {};
+};
+
+const getRefreshToken = async () => {
+  const axiosConfig: AxiosRequestConfig = {
+    method: 'GET',
+    url: '/api/refresh-token',
+    withCredentials: true,
+  };
+  const { refreshToken } = JSON.parse(localStorage.getItem('admin') || 'null');
+  axiosConfig.headers = { Authorization: `${refreshToken}` };
+
+  try {
+    const res = await axios(axiosConfig);
+
+    if (res.data && res.status === 200) {
+      localStorage.setItem(
+        'admin',
+        JSON.stringify({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken })
+      );
+    }
+  } catch (err) {
+    console.error(err);
+  }
 };
