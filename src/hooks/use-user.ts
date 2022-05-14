@@ -1,9 +1,9 @@
 import { sendRequest } from 'src/api';
-import { IUserRes } from 'src/typings/common';
+import { UserList } from 'src/typings/common';
 
 export const useUser = () => {
   const userList = async (page: number, size: number) => {
-    const { data, error } = await sendRequest<IUserRes>({
+    const { data, error } = await sendRequest<UserList>({
       method: 'GET',
       path: '/api/admin/accounts/all',
       params: { page, size },
@@ -12,7 +12,7 @@ export const useUser = () => {
   };
 
   const withdraw = async (id: number) => {
-    const { error } = await sendRequest<IUserRes>({
+    const { error } = await sendRequest<UserList>({
       method: 'DELETE',
       path: `/api/admin/accounts/withdrawal/${id}`,
     });

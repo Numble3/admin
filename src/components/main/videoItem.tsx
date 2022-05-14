@@ -3,29 +3,31 @@ import { Video } from 'src/typings/common';
 import { useNavigate } from 'react-router-dom';
 
 export default function VideoItem({
-  videoItem,
-  handleSetOpen,
+  video,
+  onDelete,
 }: {
-  videoItem: Video;
-  handleSetOpen: () => void;
+  video: Video;
+  onDelete: (id: string) => void;
 }) {
   const navigate = useNavigate();
 
   return (
     <>
-      <img src={videoItem.thumbnail} alt='thumbnail' />
-      <p className='text-center font-bold'>{videoItem.title}</p>
-      <p className='text-center'>{videoItem.accountNickname}</p>
+      <img src={video.thumbnailUrl} alt='thumbnail' className='h-[200px] w-[200px] object-cover' />
+      <p className='overflow-hidden text-ellipsis whitespace-nowrap text-center font-bold'>
+        {video.title}
+      </p>
+      <p className='text-center'>{video.nickname}</p>
       <div className='flex-column flex justify-center'>
         <Button
-          onClick={() => navigate(`${videoItem.id}`)}
+          onClick={() => navigate(`${video.videoId}`)}
           style={{ margin: '0 3px' }}
           variant='contained'
         >
           수정
         </Button>
         <Button
-          onClick={() => handleSetOpen()}
+          onClick={() => onDelete(video.videoId)}
           style={{ margin: '0 3px' }}
           variant='contained'
           color='error'

@@ -1,25 +1,42 @@
-import { getdummyUser } from '../user/dummy';
 import { Pagination } from '@mui/material';
-import { lazy, useState, useCallback } from 'react';
+import { lazy, useState, useCallback, useEffect } from 'react';
+import VideoItem from 'src/components/main/videoItem';
+import { useMain } from 'src/hooks/use-main';
+import { VideoList } from 'src/typings/common';
 
 const Modal = lazy(() => import('src/components/common/modal'));
-const Video = lazy(() => import('src/components/main/videoItem'));
 
 export default function MainPage() {
-  /* Data */
-  const videos = getdummyUser().map(user => {
-    return user.video;
+  const [data, setData] = useState<VideoList>({
+    contents: [],
+    nowPage: 1,
+    size: 10,
+    totalPage: 1,
+    totalSize: 0,
   });
-  const combinedVideos = videos.reduce((prev, next) => {
-    return prev.concat(next);
-  });
-  const sortedVideos = combinedVideos.sort(function (a, b) {
-    return a.showId - b.showId;
-  });
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { videoList } = useMain();
+
+  useEffect(() => {
+    fetchVideoList();
+  }, [currentPage]);
+
+  const fetchVideoList = async () => {
+    const { data, error } = await videoList(currentPage);
+    if (error) {
+      alert('예상치 못한 에러가 발생했습니다.');
+      return;
+    }
+    if (data) {
+      setData(data);
+      // setPage(data.nowPage + 1); /////BE working...
+    }
+  };
 
   /* modal */
   const [open, setOpen] = useState(false);
-  const handleSetOpen = () => {
+  const onDelete = (id: string) => {
     setOpen(true);
   };
   const onClose = () => {
@@ -27,28 +44,26 @@ export default function MainPage() {
   };
 
   /* pagination */
-  const [page, setPage] = useState(1);
-  const handleChangePage = useCallback(
-    (event: React.ChangeEvent<unknown>, newPage: number) => {
-      setPage(newPage);
-    },
-    [page]
-  );
+  const handleChangePage = (newPage: number) => setCurrentPage(newPage);
 
   return (
     <div>
       <h1 className='px-6 pt-6 font-bold'>메인 콘텐츠</h1>
       <div className={`grid grid-cols-5 gap-5 px-6 py-8`}>
-        {sortedVideos.slice((page - 1) * 10, page * 10).map(video => {
+        {data.contents.map(v => {
           return (
-            <div key={video.showId}>
-              <Video videoItem={video} handleSetOpen={handleSetOpen} />
+            <div key={v.videoId}>
+              <VideoItem video={v} onDelete={onDelete} />
             </div>
           );
         })}
       </div>
       <div className='flex justify-end px-10 pb-10'>
-        <Pagination count={sortedVideos.length / 10} page={page} onChange={handleChangePage} />
+        <Pagination
+          count={data.totalPage}
+          page={currentPage}
+          onChange={(_, p) => handleChangePage(p)}
+        />
       </div>
       <Modal {...{ onClose, open }} title='영상 삭제' content='정말 영상을 삭제하시겠습니까?' />
     </div>

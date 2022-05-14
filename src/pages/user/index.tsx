@@ -3,10 +3,10 @@ import { useUser } from 'src/hooks/use-user';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Modal } from 'src/components/common';
 import { useAlert } from 'src/components/user/use-common';
-import { IUserRes } from 'src/typings/common';
+import { UserList } from 'src/typings/common';
 
 export default function UserPage() {
-  const [data, setData] = useState<IUserRes>({
+  const [data, setData] = useState<UserList>({
     nowPage: 1,
     size: 10,
     totalCount: 0,

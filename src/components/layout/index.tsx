@@ -9,7 +9,7 @@ const LayoutContainer = () => {
     <>
       <LayoutHeader />
       <LayoutNavigation />
-      <main className={`h-full w-full pl-nav`}>
+      <main className={`w-full pl-nav`}>
         <Suspense fallback={null}>
           <Outlet />
         </Suspense>
