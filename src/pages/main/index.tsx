@@ -8,11 +8,11 @@ const Modal = lazy(() => import('src/components/common/modal'));
 
 export default function MainPage() {
   const [data, setData] = useState<VideoList>({
-    contents: [],
+    videos: [],
     nowPage: 1,
     size: 10,
     totalPage: 1,
-    totalSize: 0,
+    totalCount: 0,
   });
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -30,7 +30,7 @@ export default function MainPage() {
     }
     if (data) {
       setData(data);
-      // setPage(data.nowPage + 1); /////BE working...
+      // setCurrentPage(data.nowPage);
     }
   };
 
@@ -50,7 +50,7 @@ export default function MainPage() {
     <div>
       <h1 className='px-6 pt-6 font-bold'>메인 콘텐츠</h1>
       <div className={`grid grid-cols-5 gap-5 px-6 py-8`}>
-        {data.contents.map(v => {
+        {data.videos.map(v => {
           return (
             <div key={v.videoId}>
               <VideoItem video={v} onDelete={onDelete} />

@@ -6,21 +6,6 @@ type SidebarType = {
   icon: ReactNode;
 };
 
-export type video = {
-  id: number;
-  type: string;
-  description: string;
-  thumbnail: string;
-  url: string;
-  showId: number;
-  title: string;
-  accountNickname: string;
-  view: number;
-  like: number;
-  createdDate: string;
-  accountId: string;
-};
-
 type AlertType = { visible: boolean; msg: string; type: 'error' | 'success' };
 
 type UserList = {
@@ -48,11 +33,11 @@ type UserDetail = {
 };
 
 type VideoList = {
-  contents: Video[];
+  videos: Video[];
   nowPage: number;
   size: number;
   totalPage: number;
-  totalSize: number;
+  totalCount: number;
 };
 
 type Video = {

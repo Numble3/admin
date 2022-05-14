@@ -71,6 +71,7 @@ export const sendRequest = async <T>(
 
   try {
     const res = await axios(axiosConfig);
+    console.log('res', res);
 
     if (res.status === 200) {
       return { data: res.data, error: null };

@@ -18,16 +18,16 @@ const Modal = lazy(() => import('src/components/common/modal'));
 export default function MainDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  /* Data */
-  const videos = getdummyUser().map(user => {
-    return user.video;
-  });
-  const combinedVideos = videos.reduce((prev, next) => {
-    return prev.concat(next);
-  });
-  const selectedVideo = combinedVideos.find(video => {
-    return video.id.toString() === id;
-  });
+  // /* Data */
+  // const videos = getdummyUser().map(user => {
+  //   return user.video;
+  // });
+  // const combinedVideos = videos.reduce((prev, next) => {
+  //   return prev.concat(next);
+  // });
+  // const selectedVideo = combinedVideos.find(video => {
+  //   return video.id.toString() === id;
+  // });
 
   /* modal */
   const [open, setOpen] = useState(false);
