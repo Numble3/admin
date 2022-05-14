@@ -1,7 +1,21 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import useSWR from 'swr';
 
 axios.defaults.baseURL = 'http://3.36.157.185:80';
+
+const errorHandling = (err: unknown) => {
+  let errRes: ErrorType = { data: { message: '' }, status: -1, statusText: '' };
+
+  if (axios.isAxiosError(err)) {
+    errRes = {
+      data: { message: (err.response?.data as { message: string }).message ?? '' },
+      status: err.response?.status ?? -1,
+      statusText: err.response?.statusText ?? '',
+    };
+  }
+  console.error(err);
+
+  return errRes;
+};
 
 export const sendRequest = async <T>(
   request: RequestForm
@@ -35,14 +49,7 @@ export const sendRequest = async <T>(
     throw res;
   } catch (err) {
     // console.error(err);
-    let errRes: ErrorType = { data: { message: '' }, status: -1, statusText: '' };
-
-    //401에러 확인
-    if (axios.isAxiosError(err)) {
-      errRes.data.message = (err.response?.data as { message: string }).message ?? '';
-      errRes.status = err.response?.status ?? -1;
-      errRes.statusText = err.response?.statusText ?? '';
-    }
+    const errRes = errorHandling(err);
 
     return { data: null, error: errRes };
   }
@@ -50,9 +57,6 @@ export const sendRequest = async <T>(
 
 const getAuth = (axiosConfig: AxiosRequestConfig) => {
   const token = JSON.parse(localStorage.getItem('admin') || 'null');
-  // if (token && token.accesToken) {
-  //   axiosConfig.headers = { Authorization: `Bearer ${token.accessToken}` };
-  // }
   axiosConfig.headers = token ? { Authorization: `${token.accessToken}` } : {};
 };
 
