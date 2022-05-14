@@ -3,7 +3,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import GridViewIcon from '@mui/icons-material/GridView';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
-import { SidebarType } from 'src/types/common';
+import { SidebarType } from 'src/typings/common';
 import { memo } from 'react';
 
 const sidebar: SidebarType[] = [

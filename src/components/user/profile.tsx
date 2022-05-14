@@ -1,3 +1,5 @@
+import { UserDetail } from 'src/typings/common';
+
 interface Props {
   user: UserDetail | null;
 }

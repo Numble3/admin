@@ -12,7 +12,7 @@ import {
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from 'src/components/common';
-import { video } from 'src/types/common';
+import { User, video } from 'src/typings/common';
 
 interface Props {
   page: number;

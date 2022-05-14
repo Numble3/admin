@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import { Video } from 'src/types/common';
+import { Video } from 'src/typings/common';
 import { useNavigate } from 'react-router-dom';
 
 export default function VideoItem({

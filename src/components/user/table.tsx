@@ -10,6 +10,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { User } from 'src/typings/common';
 
 interface Props {
   currentPage: number;

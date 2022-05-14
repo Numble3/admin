@@ -1,4 +1,5 @@
 import { sendRequest } from 'src/api';
+import { IUserRes } from 'src/typings/common';
 
 export const useUser = () => {
   const userList = async (page: number, size: number) => {

@@ -1,4 +1,4 @@
-import { AlertType } from 'src/types/common';
+import { AlertType } from 'src/typings/common';
 import useSWR from 'swr';
 
 export const useAlert = () => {
