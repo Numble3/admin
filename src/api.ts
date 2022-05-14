@@ -1,6 +1,44 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 axios.defaults.baseURL = 'http://3.36.157.185:80';
+axios.interceptors.response.use(
+  res => res,
+  async err => {
+    const {
+      config,
+      response: { status },
+    } = err;
+    const navigate = useNavigate();
+
+    if (status === 401) {
+      const { refreshToken } = JSON.parse(localStorage.getItem('admin') || '');
+
+      if (!refreshToken) {
+        localStorage.removeItem('admin');
+        navigate('/login');
+        return;
+      }
+
+      const axiosConfig: AxiosRequestConfig = {
+        method: 'GET',
+        url: '/api/refresh-token',
+        headers: { Authorization: refreshToken },
+      };
+
+      const res = await axios(axiosConfig);
+      // console.log('res', res);
+      // console.log('refreshToken', refreshToken);
+
+      localStorage.setItem(
+        'admin',
+        JSON.stringify({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken })
+      );
+
+      return config;
+    }
+  }
+);
 
 const errorHandling = (err: unknown) => {
   let errRes: ErrorType = { data: { message: '' }, status: -1, statusText: '' };
@@ -43,9 +81,7 @@ export const sendRequest = async <T>(
     if (res.data && res.status === 200) {
       return { data: res.data, error: null };
     }
-    if (res.status === 401) {
-      getRefreshToken();
-    }
+
     throw res;
   } catch (err) {
     // console.error(err);
@@ -60,25 +96,26 @@ const getAuth = (axiosConfig: AxiosRequestConfig) => {
   axiosConfig.headers = token ? { Authorization: `${token.accessToken}` } : {};
 };
 
-const getRefreshToken = async () => {
-  const axiosConfig: AxiosRequestConfig = {
-    method: 'GET',
-    url: '/api/refresh-token',
-    withCredentials: true,
-  };
-  const { refreshToken } = JSON.parse(localStorage.getItem('admin') || 'null');
-  axiosConfig.headers = { Authorization: `${refreshToken}` };
+// const getRefreshToken = async () => {
+//   const axiosConfig: AxiosRequestConfig = {
+//     method: 'GET',
+//     url: '/api/refresh-token',
+//     withCredentials: true,
+//   };
+//   const { refreshToken } = JSON.parse(localStorage.getItem('admin') || 'null');
+//   axiosConfig.headers = { Authorization: `${refreshToken}` };
 
-  try {
-    const res = await axios(axiosConfig);
+//   try {
+//     const res = await axios(axiosConfig);
+//     console.log('refresh api', res);
 
-    if (res.data && res.status === 200) {
-      localStorage.setItem(
-        'admin',
-        JSON.stringify({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken })
-      );
-    }
-  } catch (err) {
-    console.error(err);
-  }
-};
+//     if (res.data && res.status === 200) {
+//       localStorage.setItem(
+//         'admin',
+//         JSON.stringify({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken })
+//       );
+//     }
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };

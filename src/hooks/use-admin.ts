@@ -12,7 +12,10 @@ export const useAdmin = () => {
     });
 
     if (data) {
-      localStorage.setItem('admin', JSON.stringify({ accessToken: data.accessToken }));
+      localStorage.setItem(
+        'admin',
+        JSON.stringify({ accessToken: data.accessToken, refreshToken: data.refreshToken })
+      );
     }
 
     return { data, error };
