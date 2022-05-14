@@ -9,30 +9,25 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CustomAlert } from 'src/components/custom';
 
 interface Props {
   currentPage: number;
   totalPage: number;
-  handleChangePage: (event: ChangeEvent<unknown>, newPage: number) => void;
   userList: User[];
+  handleChangePage: (newPage: number) => void;
+  handleSetOpen: (id: number) => void;
 }
 
-const CustomTable = ({ currentPage, totalPage, userList, handleChangePage }: Props) => {
+const UserTable = ({
+  currentPage,
+  totalPage,
+  userList,
+  handleChangePage,
+  handleSetOpen,
+}: Props) => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-
-  /* modal */
-  const headers: string[] = ['이메일', '닉네임', '가입일', '마지막 로그인'];
-
-  const handleSetOpen = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+  const headers: string[] = ['이메일', '닉네임', '가입일', '마지막 로그인', '상태변경'];
 
   return (
     <div>
@@ -70,9 +65,9 @@ const CustomTable = ({ currentPage, totalPage, userList, handleChangePage }: Pro
                         variant='contained'
                         color='error'
                         size='small'
-                        onClick={() => handleSetOpen()}
+                        onClick={() => handleSetOpen(v.id)}
                       >
-                        삭제
+                        탈퇴
                       </Button>
                     </div>
                   </TableCell>
@@ -83,15 +78,10 @@ const CustomTable = ({ currentPage, totalPage, userList, handleChangePage }: Pro
         </TableContainer>
       </div>
       <div className='flex justify-end px-10 pb-10'>
-        <Pagination count={totalPage} page={currentPage} onChange={handleChangePage} />
+        <Pagination count={totalPage} page={currentPage} onChange={(_, p) => handleChangePage(p)} />
       </div>
-      <CustomAlert
-        {...{ onClose, open }}
-        title={`회원 탈퇴`}
-        content={`정말 회원을 탈퇴하시겠습니까?`}
-      />
     </div>
   );
 };
 
-export default CustomTable;
+export default UserTable;

@@ -5,7 +5,7 @@ import { useAdmin } from 'src/hooks/use-admin';
 import { useAlert } from '../user/use-common';
 import { useNavigate } from 'react-router-dom';
 
-const CustomAlert = lazy(() => import('src/components/custom/alert'));
+const CustomModal = lazy(() => import('src/components/custom/modal'));
 
 const LayoutHeader = () => {
   const [open, setOpen] = useState(false);
@@ -34,7 +34,7 @@ const LayoutHeader = () => {
         <LogoutIcon />
       </div>
       <Suspense fallback={null}>
-        <CustomAlert
+        <CustomModal
           {...{ onClose, open, onOk }}
           title='로그아웃'
           content='정말 로그아웃 하시겠습니까?'

@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 
 axios.defaults.baseURL = 'http://3.36.157.185:80';
 axios.interceptors.response.use(
@@ -70,18 +71,14 @@ export const sendRequest = async <T>(
   getAuth(axiosConfig);
 
   try {
-    console.log('axiosConfig', axiosConfig);
-
     const res = await axios(axiosConfig);
-    // console.log('res', res);
 
-    if (res.data && res.status === 200) {
+    if (res.status === 200) {
       return { data: res.data, error: null };
     }
 
     throw res;
   } catch (err) {
-    // console.error(err);
     const errRes = errorHandling(err);
 
     return { data: null, error: errRes };
@@ -93,26 +90,6 @@ const getAuth = (axiosConfig: AxiosRequestConfig) => {
   axiosConfig.headers = token ? { Authorization: `${token.accessToken}` } : {};
 };
 
-// const getRefreshToken = async () => {
-//   const axiosConfig: AxiosRequestConfig = {
-//     method: 'GET',
-//     url: '/api/refresh-token',
-//     withCredentials: true,
-//   };
-//   const { refreshToken } = JSON.parse(localStorage.getItem('admin') || 'null');
-//   axiosConfig.headers = { Authorization: `${refreshToken}` };
-
-//   try {
-//     const res = await axios(axiosConfig);
-//     console.log('refresh api', res);
-
-//     if (res.data && res.status === 200) {
-//       localStorage.setItem(
-//         'admin',
-//         JSON.stringify({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken })
-//       );
-//     }
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
+export const mutate = () => {
+  const { data } = useSWR();
+};

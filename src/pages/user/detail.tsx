@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { User } from 'src/types/common';
 import Profile from '../../components/user/profile';
-import  from '../../components/user/table';
 
 const headers: string[] = ['id', 'type', 'title', 'description', 'thumbnail', 'video url', ' '];
 

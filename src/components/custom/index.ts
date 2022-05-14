@@ -1,1 +1,1 @@
-export { default as CustomAlert } from './alert';
+export { default as CustomModal } from './modal';

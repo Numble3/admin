@@ -16,7 +16,7 @@ const AlertPopup = () => {
 
   return (
     <div id='alert' className={`top-5 ${alert?.visible ? 'translate-y-0' : 'translate-y-[-150%]'}`}>
-      <Alert severity='error'>{alert?.msg}</Alert>
+      <Alert severity={alert?.type}>{alert?.msg}</Alert>
     </div>
   );
 };

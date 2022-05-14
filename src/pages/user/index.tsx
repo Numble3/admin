@@ -1,9 +1,8 @@
-import { getdummyUser } from './dummy';
-import CustomTable from '../../components/user/table';
-import { useAccounts } from 'src/hooks/use-account';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-
-// const users = getdummyUser();
+import UserTable from '../../components/user/table';
+import { useUser } from 'src/hooks/use-user';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { CustomModal } from 'src/components/custom';
+import { useAlert } from 'src/components/user/use-common';
 
 export default function UserPage() {
   const [data, setData] = useState<IUserRes>({
@@ -13,39 +12,67 @@ export default function UserPage() {
     totalPage: 0,
     accountDtos: [],
   });
-
   const [currentPage, setCurrentPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const selectUser = useRef(-1);
 
-  const { accountList } = useAccounts();
+  const { userList, withdraw } = useUser();
+  const { onShowAlert } = useAlert();
+
+  useEffect(() => {
+    fetchUser();
+  }, [currentPage]);
+
+  const fetchUser = async () => {
+    const { data, error } = await userList(currentPage, 10);
+    if (data) {
+      setData(data);
+    }
+    if (error) {
+      alert('예상치 못한 에러가 발생했습니다.');
+    }
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+  const onOk = async () => {
+    const { error } = await withdraw(selectUser.current);
+    if (error) {
+      onShowAlert(error.data.message);
+    }
+    await fetchUser();
+    onShowAlert('사용자를 탈퇴했습니다.', 'success');
+    setOpen(false);
+  };
+  const handleSetOpen = (id: number) => {
+    setOpen(true);
+    selectUser.current = id;
+  };
 
   /* pagenation */
   const handleChangePage = useCallback(
-    (event: ChangeEvent<unknown>, newPage: number) => {
+    (newPage: number) => {
       setCurrentPage(newPage);
     },
     [currentPage]
   );
 
-  useEffect(() => {
-    async function fetchAccount() {
-      const { data, error } = await accountList(currentPage, 10);
-      if (data) {
-        setData(data);
-      }
-    }
-    fetchAccount();
-  }, [currentPage]);
-
   return (
-    <div>
+    <>
       <h1 className={`px-6 pt-6 font-bold`}>유저</h1>
       <div>
-        <CustomTable
+        <UserTable
           userList={data?.accountDtos}
           totalPage={data.totalPage}
-          {...{ currentPage, handleChangePage }}
+          {...{ currentPage, handleChangePage, handleSetOpen }}
         />
       </div>
-    </div>
+      <CustomModal
+        {...{ onClose, open, onOk }}
+        title={`회원 탈퇴`}
+        content={`정말 회원을 탈퇴하시겠습니까?`}
+      />
+    </>
   );
 }

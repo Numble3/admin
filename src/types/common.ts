@@ -21,4 +21,4 @@ export type video = {
   accountId: string;
 };
 
-export type AlertType = { visible: boolean; msg: string };
+export type AlertType = { visible: boolean; msg: string; type: 'error' | 'success' };
