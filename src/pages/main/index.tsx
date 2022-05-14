@@ -28,7 +28,7 @@ export default function MainPage() {
   const fetchVideoList = async () => {
     const { data, error } = await videoList(currentPage);
     if (error) {
-      alert('예상치 못한 에러가 발생했습니다.');
+      alert('에러가 발생했습니다.');
       return;
     }
     if (data) {

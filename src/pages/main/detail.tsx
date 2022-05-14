@@ -1,5 +1,4 @@
-import { useParams } from 'react-router-dom';
-import { getdummyUser } from '../user/dummy';
+import { Link, useParams } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -10,24 +9,32 @@ import {
   Paper,
   TableRow,
 } from '@mui/material';
-import { lazy, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { lazy, useEffect, useState } from 'react';
+import { useMain } from 'src/hooks/use-main';
+import { VideoDetail, VideoType } from 'src/typings/common';
 
+const transType = (v: VideoType) => (v === 'EMBEDDED' ? '임베드 영상' : '직접 업로드');
+
+const header = ['사용자 보기', '닉네임', '동영상 타입', '비디오 URL'];
 const Modal = lazy(() => import('src/components/common/modal'));
 
 export default function MainDetail() {
+  const [videoData, setVidoeData] = useState<VideoDetail>();
+
   const { id } = useParams();
-  const navigate = useNavigate();
-  // /* Data */
-  // const videos = getdummyUser().map(user => {
-  //   return user.video;
-  // });
-  // const combinedVideos = videos.reduce((prev, next) => {
-  //   return prev.concat(next);
-  // });
-  // const selectedVideo = combinedVideos.find(video => {
-  //   return video.id.toString() === id;
-  // });
+  const { videoDetail } = useMain();
+
+  useEffect(() => {
+    fetchVideo();
+  }, []);
+
+  const fetchVideo = async () => {
+    const { data, error } = await videoDetail(id ?? '');
+    if (error) {
+      alert('에러가 발생했습니다.');
+    }
+    data && setVidoeData(data);
+  };
 
   /* modal */
   const [open, setOpen] = useState(false);
@@ -38,24 +45,30 @@ export default function MainDetail() {
   return (
     <div>
       <h1 className='px-6 pt-6 font-bold'>메인 콘텐츠 {'>'} 수정</h1>
-      <div className='flex items-center px-6 py-8'>
-        <img width='40%' src={selectedVideo?.thumbnail} alt='thumnail' />
+      <div className='mx-10 flex items-center py-8'>
+        <div className='flex w-full justify-center'>
+          <img
+            src={videoData?.thumbnailUrl}
+            alt='thumbnail'
+            className='h-[200px] w-[400px] bg-gray-100 object-contain'
+          />
+        </div>
         <div className='px-7'>
           <p>
-            <strong>title:</strong> {selectedVideo?.title}
+            <strong>제목:</strong> {videoData?.title}
           </p>
           <p>
-            <strong>description:</strong> {selectedVideo?.description}
+            <strong>설명:</strong> {videoData?.content}
           </p>
           <p>
-            <strong>update date:</strong> {selectedVideo?.created_date}
+            <strong>업로드일자:</strong> {videoData?.createdAt}
           </p>
           <p>
             <span>
-              <strong>view:</strong> {selectedVideo?.view}
+              <strong>조회수:</strong> {videoData?.view}
             </span>
             <span className='px-3'>
-              <strong>like:</strong> {selectedVideo?.like}
+              <strong>좋아요 수:</strong> {videoData?.like}
             </span>
           </p>
         </div>
@@ -65,31 +78,37 @@ export default function MainDetail() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align='center'>Show Id</TableCell>
-                <TableCell align='center'>Id</TableCell>
-                <TableCell align='center'>Type</TableCell>
-                <TableCell align='center'>User Id</TableCell>
-                <TableCell align='center'>User Nickname</TableCell>
-                <TableCell align='center'>Thumbnail</TableCell>
-                <TableCell align='center'>Video URL</TableCell>
+                {header.map(v => (
+                  <TableCell align='center' key={v}>
+                    {v}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
               <TableRow>
                 <TableCell align='center'>
-                  <input
-                    className='w-12 rounded py-1 px-2 text-center outline'
-                    type='text'
-                    maxLength={4}
-                    placeholder={`${selectedVideo?.showId}`}
-                  />
+                  <Link to={`/user/${videoData?.accountId}`}>
+                    <Button
+                      onClick={() => setOpen(true)}
+                      style={{ margin: '0 3px' }}
+                      variant='contained'
+                      color='primary'
+                    >
+                      상세
+                    </Button>
+                  </Link>
                 </TableCell>
-                <TableCell align='center'>{selectedVideo?.id}</TableCell>
-                <TableCell align='center'>{selectedVideo?.type}</TableCell>
-                <TableCell align='center'>{selectedVideo?.accountId}</TableCell>
-                <TableCell align='center'>{selectedVideo?.accountNickname}</TableCell>
-                <TableCell align='center'>{selectedVideo?.thumbnail}</TableCell>
-                <TableCell align='center'>{selectedVideo?.url}</TableCell>
+                <TableCell align='center'>{videoData?.nickname}</TableCell>
+                <TableCell align='center'>{transType(videoData?.type ?? 'EMBEDDED')}</TableCell>
+                <TableCell align='center'>
+                  <a
+                    className='text-sky-600 decoration-sky-600 decoration-solid'
+                    href={videoData?.videoUrl}
+                  >
+                    {videoData?.videoUrl}
+                  </a>
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -102,10 +121,7 @@ export default function MainDetail() {
           variant='contained'
           color='error'
         >
-          Delete
-        </Button>
-        <Button onClick={() => navigate('..')} style={{ margin: '0 3px' }} variant='contained'>
-          Edit Complete
+          삭제
         </Button>
       </div>
       <Modal {...{ onClose, open }} title='영상 삭제' content='정말 영상을 삭제하시겠습니까?' />

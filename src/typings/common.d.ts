@@ -46,3 +46,14 @@ type Video = {
   videoId: string;
   videoAdminState: 'deleted' | null; // null: 삭제 안됨
 };
+
+type VideoType = 'EMBEDDED' | 'VIDEO';
+type VideoDetail = Omit<Video, 'videoId'> & {
+  content: string;
+  createdAt: string;
+  like: number;
+  view: number; //조회수
+  videoUrl: string;
+  type: VideoType;
+  accountId: number;
+};

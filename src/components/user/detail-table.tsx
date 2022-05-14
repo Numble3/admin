@@ -35,7 +35,7 @@ const UserDetailTable = ({ id }: { id: string }) => {
   const fetchVideo = useCallback(async () => {
     const { data, error } = await userVideo(id, currentPage);
     if (error) {
-      alert('예상치 못한 에러가 발생했습니다.');
+      alert('에러가 발생했습니다.');
       return;
     }
     data && setVideoData(data);
@@ -85,7 +85,9 @@ const UserDetailTable = ({ id }: { id: string }) => {
                     ?.filter(v => v.videoAdminState !== 'deleted')
                     .map(v => (
                       <TableRow key={v.videoId}>
-                        <TableCell align='center'>{v.title}</TableCell>
+                        <TableCell width={600} align='center'>
+                          {v.title}
+                        </TableCell>
                         <TableCell align='center'>
                           <div className='flex w-full justify-center'>
                             <img

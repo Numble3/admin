@@ -18,7 +18,7 @@ export default function UserDetailPage() {
   const fetchUser = useCallback(async () => {
     const { data, error } = await userDetail(String(id));
     if (error) {
-      alert('예상치 못한 에러가 발생했습니다.');
+      alert('에러가 발생했습니다.');
       return;
     }
 
