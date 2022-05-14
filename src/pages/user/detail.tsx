@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import UserDetailTable from 'src/components/user/detail-table';
 import { useUser } from 'src/hooks/use-user';
@@ -15,7 +15,7 @@ export default function UserDetailPage() {
     fetchUser();
   }, [id]);
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     const { data, error } = await userDetail(String(id));
     if (error) {
       alert('예상치 못한 에러가 발생했습니다.');
@@ -23,7 +23,7 @@ export default function UserDetailPage() {
     }
 
     setUser(data);
-  };
+  }, []);
 
   return (
     <main className={`px-6 pt-6`}>

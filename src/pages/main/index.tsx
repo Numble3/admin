@@ -1,6 +1,7 @@
 import { Pagination } from '@mui/material';
-import { lazy, useState, useCallback, useEffect } from 'react';
+import { lazy, useState, useEffect, useRef } from 'react';
 import VideoItem from 'src/components/main/videoItem';
+import { useAlert } from 'src/components/user/use-common';
 import { useMain } from 'src/hooks/use-main';
 import { VideoList } from 'src/typings/common';
 
@@ -15,8 +16,10 @@ export default function MainPage() {
     totalCount: 0,
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const videoId = useRef(-1);
 
-  const { videoList } = useMain();
+  const { videoList, deleteVideo } = useMain();
+  const { onShowAlert } = useAlert();
 
   useEffect(() => {
     fetchVideoList();
@@ -30,14 +33,26 @@ export default function MainPage() {
     }
     if (data) {
       setData(data);
-      // setCurrentPage(data.nowPage);
+      setCurrentPage(data.nowPage);
     }
   };
 
   /* modal */
   const [open, setOpen] = useState(false);
-  const onDelete = (id: string) => {
+  const onDelete = (id: number) => {
+    videoId.current = id;
     setOpen(true);
+  };
+  const onOk = async () => {
+    const error = await deleteVideo(videoId.current);
+    if (error) {
+      onShowAlert(error.data.message, 'error');
+      return;
+    }
+    onShowAlert('영상을 삭제했습니다', 'success');
+    await fetchVideoList();
+
+    onClose();
   };
   const onClose = () => {
     setOpen(false);
@@ -47,16 +62,18 @@ export default function MainPage() {
   const handleChangePage = (newPage: number) => setCurrentPage(newPage);
 
   return (
-    <div>
+    <>
       <h1 className='px-6 pt-6 font-bold'>메인 콘텐츠</h1>
       <div className={`grid grid-cols-5 gap-5 px-6 py-8`}>
-        {data.videos.map(v => {
-          return (
-            <div key={v.videoId}>
-              <VideoItem video={v} onDelete={onDelete} />
-            </div>
-          );
-        })}
+        {data.videos
+          .filter(v => v.videoAdminState !== 'deleted')
+          .map(v => {
+            return (
+              <div key={v.videoId}>
+                <VideoItem video={v} onDelete={onDelete} />
+              </div>
+            );
+          })}
       </div>
       <div className='flex justify-end px-10 pb-10'>
         <Pagination
@@ -65,7 +82,11 @@ export default function MainPage() {
           onChange={(_, p) => handleChangePage(p)}
         />
       </div>
-      <Modal {...{ onClose, open }} title='영상 삭제' content='정말 영상을 삭제하시겠습니까?' />
-    </div>
+      <Modal
+        {...{ onOk, onClose, open }}
+        title='영상 삭제'
+        content='정말 영상을 삭제하시겠습니까?'
+      />
+    </>
   );
 }

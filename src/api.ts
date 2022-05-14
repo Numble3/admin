@@ -73,7 +73,7 @@ export const sendRequest = async <T>(
     const res = await axios(axiosConfig);
     console.log('res', res);
 
-    if (res.status === 200) {
+    if (/2\d+/.test(String(res.status))) {
       return { data: res.data, error: null };
     }
 

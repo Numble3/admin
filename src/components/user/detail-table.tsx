@@ -9,36 +9,56 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { memo, useEffect, useState } from 'react';
+import { lazy, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useMain } from 'src/hooks/use-main';
 import { useUser } from 'src/hooks/use-user';
 import { VideoList } from 'src/typings/common';
+import { useAlert } from './use-common';
+
+const headers = ['제목', '썸네일', '상태변경'];
+const Modal = lazy(() => import('src/components/common/modal'));
 
 const UserDetailTable = ({ id }: { id: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [videoData, setVideoData] = useState<VideoList>();
-  const headers = ['제목', '썸네일', '상태변경'];
-
+  const videoId = useRef(-1);
   const { userVideo } = useUser();
+  const { deleteVideo } = useMain();
+  const { onShowAlert } = useAlert();
 
   useEffect(() => {
     fetchVideo();
   }, [currentPage]);
 
-  const fetchVideo = async () => {
+  const fetchVideo = useCallback(async () => {
     const { data, error } = await userVideo(id, currentPage);
     if (error) {
       alert('예상치 못한 에러가 발생했습니다.');
       return;
     }
     data && setVideoData(data);
-  };
+  }, []);
+
+  /* pagination */
+  const handleChangePage = (newPage: number) => setCurrentPage(newPage);
 
   /* modal */
   const [open, setOpen] = useState(false);
-  const handleSetOpen = () => {
+  const handleSetOpen = (id: string) => {
+    videoId.current = Number(id);
     setOpen(true);
+  };
+  const onOk = async () => {
+    const error = await deleteVideo(videoId.current);
+    if (error) {
+      onShowAlert('비디오를 삭제했습니다', 'error');
+      return;
+    }
+    await fetchVideo();
+    onShowAlert('비디오를 삭제했습니다', 'success');
+    onClose();
   };
   const onClose = () => {
     setOpen(false);
@@ -46,7 +66,7 @@ const UserDetailTable = ({ id }: { id: string }) => {
 
   return (
     <>
-      {videoData?.videos ? (
+      {videoData?.videos && videoData?.videos.length > 0 ? (
         <>
           <div className={`px-6 py-8`}>
             <TableContainer component={Paper}>
@@ -92,7 +112,7 @@ const UserDetailTable = ({ id }: { id: string }) => {
                               variant='contained'
                               color='error'
                               size='small'
-                              onClick={() => handleSetOpen()}
+                              onClick={() => handleSetOpen(v.videoId)}
                             >
                               삭제
                             </Button>
@@ -105,17 +125,21 @@ const UserDetailTable = ({ id }: { id: string }) => {
             </TableContainer>
           </div>
           <div className='flex justify-end px-10 pb-10'>
-            {/* <Pagination count={length / rowPerPage} page={page} onChange={handleChangePage} /> */}
+            <Pagination
+              count={videoData.totalPage}
+              page={currentPage}
+              onChange={(_, p) => handleChangePage(p)}
+            />
           </div>
         </>
       ) : (
         <h2 className='mt-10 text-center'>등록한 비디오가 없습니다.</h2>
       )}
-      {/* <Modal
-    {...{ onClose, open }}
-    title={`${alertMessage} 삭제`}
-    content={`정말 ${alertMessage}을 삭제하시겠습니까?`}
-  /> */}
+      <Modal
+        {...{ onClose, open, onOk }}
+        title={`비디오 삭제`}
+        content={`정말 비디오을 삭제하시겠습니까?`}
+      />
     </>
   );
 };

@@ -1,14 +1,9 @@
 import { Button } from '@mui/material';
 import { Video } from 'src/typings/common';
 import { useNavigate } from 'react-router-dom';
+import { memo } from 'react';
 
-export default function VideoItem({
-  video,
-  onDelete,
-}: {
-  video: Video;
-  onDelete: (id: string) => void;
-}) {
+const VideoItem = ({ video, onDelete }: { video: Video; onDelete: (id: number) => void }) => {
   const navigate = useNavigate();
 
   return (
@@ -17,7 +12,9 @@ export default function VideoItem({
       <p className='overflow-hidden text-ellipsis whitespace-nowrap text-center font-bold'>
         {video.title}
       </p>
-      <p className='text-center'>{video.nickname}</p>
+      <p className='mb-3 overflow-hidden text-ellipsis whitespace-nowrap text-center'>
+        {video.nickname}
+      </p>
       <div className='flex-column flex justify-center'>
         <Button
           onClick={() => navigate(`${video.videoId}`)}
@@ -27,7 +24,7 @@ export default function VideoItem({
           수정
         </Button>
         <Button
-          onClick={() => onDelete(video.videoId)}
+          onClick={() => onDelete(Number(video.videoId))}
           style={{ margin: '0 3px' }}
           variant='contained'
           color='error'
@@ -37,4 +34,6 @@ export default function VideoItem({
       </div>
     </>
   );
-}
+};
+
+export default memo(VideoItem);

@@ -1,12 +1,12 @@
+import { memo } from 'react';
 import { UserDetail } from 'src/typings/common';
 
+const header = ['이메일', '닉네임', '가입일', '마지막 로그인'];
 interface Props {
   user: UserDetail | null;
 }
 
 const Profile = ({ user }: Props) => {
-  const header = ['이메일', '닉네임', '가입일', '마지막 로그인'];
-
   return (
     <div className={`w-full py-10 text-center `}>
       <div className={`grid grid-cols-4 gap-x-4 gap-y-10 p-10 shadow-md`}>
@@ -24,4 +24,4 @@ const Profile = ({ user }: Props) => {
   );
 };
 
-export default Profile;
+export default memo(Profile);

@@ -11,5 +11,13 @@ export const useMain = () => {
     return { data, error };
   };
 
-  return { videoList };
+  const deleteVideo = async (id: number) => {
+    const { error } = await sendRequest({
+      method: 'DELETE',
+      path: `/api/admin/videos/${id}`,
+    });
+
+    return error;
+  };
+  return { videoList, deleteVideo };
 };
