@@ -1,5 +1,5 @@
 import { sendRequest } from 'src/api';
-import { UserList } from 'src/typings/common';
+import { UserDetail, UserList, VideoList } from 'src/typings/common';
 
 export const useUser = () => {
   const userList = async (page: number, size: number) => {
@@ -28,5 +28,15 @@ export const useUser = () => {
     return { data, error };
   };
 
-  return { userList, withdraw, userDetail };
+  const userVideo = async (id: string, page: number) => {
+    const { data, error } = await sendRequest<VideoList>({
+      method: 'GET',
+      path: `/api/admin/accounts/videos/${id}`,
+      params: { page, size: 10 },
+    });
+
+    return { data, error };
+  };
+
+  return { userList, withdraw, userDetail, userVideo };
 };

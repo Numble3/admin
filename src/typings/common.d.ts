@@ -8,11 +8,14 @@ type SidebarType = {
 
 type AlertType = { visible: boolean; msg: string; type: 'error' | 'success' };
 
-type UserList = {
+type ListRes = {
   nowPage: number;
   size: number;
-  totalCount: number;
   totalPage: number;
+  totalCount: number;
+};
+
+type UserList = ListRes & {
   accountDtos: User[];
 };
 
@@ -32,12 +35,8 @@ type UserDetail = {
   createdAt: string;
 };
 
-type VideoList = {
+type VideoList = ListRes & {
   videos: Video[];
-  nowPage: number;
-  size: number;
-  totalPage: number;
-  totalCount: number;
 };
 
 type Video = {
@@ -45,4 +44,5 @@ type Video = {
   thumbnailUrl: string;
   title: string;
   videoId: string;
+  videoAdminState: 'deleted' | null; // null: 삭제 안됨
 };
